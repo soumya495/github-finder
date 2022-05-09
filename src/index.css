@@ -1,3 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html {
+  overflow-x: hidden;
+}
+
+body {
+  position: relative;
+  font-family: 'Source Code Pro', monospace;
+  overflow-x: hidden;
+}
