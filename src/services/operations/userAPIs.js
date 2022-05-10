@@ -1,20 +1,32 @@
-import { requestConnector } from '../restApiConnector'
-import { setUsers } from '../../slices/users'
+import axios from 'axios'
+import { setUsers, setLoading } from '../../slices/users'
 
-export function getAllUsers() {
+// get search results
+export function getSearchedUsers(query) {
   return async (dispatch) => {
     try {
-      const response = await requestConnector(
-        'GET',
-        `${process.env.REACT_APP_GITHUB_API_URL}/users`,
-        process.env.REACT_APP_GITHUB_FINDER_ACCESS_TOKEN
+      dispatch(setLoading(true))
+      const response = await axios(
+        `${process.env.REACT_APP_GITHUB_API_URL}/search/users?q=${query}`,
+        {
+          headers: {
+            Authorization: process.env.REACT_APP_GITHUB_FINDER_ACCESS_TOKEN,
+          },
+        }
       )
-
       if (response.data) {
         dispatch(setUsers(response.data))
+        await dispatch(setLoading(false))
       }
-    } catch (err) {
-      console.log('User fetch error:', err)
+    } catch (e) {
+      console.log('Fetch User Error', e)
     }
+  }
+}
+
+// clear existing users
+export function clearUsers() {
+  return (dispatch) => {
+    dispatch(setUsers([]))
   }
 }
