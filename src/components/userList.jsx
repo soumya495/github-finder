@@ -16,7 +16,10 @@ function UserList({ users }) {
           <div className=''>
             <h2 className='font-bold text-white'>{user.login}</h2>
             <div className=''>
-              <Link className='text-sm leading-tight' to='/'>
+              <Link
+                className='text-sm leading-tight'
+                to={`/users/${user.login}`}
+              >
                 Visit profile
               </Link>
             </div>
