@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { getUser } from '../services/operations/userAPIs'
+import { getUser, clearUser } from '../services/operations/userAPIs'
 import Spinner from '../components/assets/spinner.gif'
 import { useNavigate } from 'react-router-dom'
+import { FaUsers, FaStore, FaUserFriends } from 'react-icons/fa'
+import { AiOutlineCodepen } from 'react-icons/ai'
 
 function User() {
   const params = useParams()
@@ -18,7 +20,7 @@ function User() {
     dispatch(getUser(user))
   }, [])
 
-  if (userData.loading)
+  if (userData.loading || !userData.user)
     return (
       <div className='w-screen min-h-[85vh] flex justify-center items-center'>
         <img src={Spinner} alt='spinner' className='w-96 h-96' />
@@ -38,24 +40,26 @@ function User() {
     location,
     login,
     name,
-    public_gits,
+    public_gists,
     public_repos,
     twitter_username,
   } = userData.user
 
   return (
     <div className='container max-w-6xl px-4 py-16 mx-auto min-h-[85vh]'>
-      {console.log(userData.user)}
       <button
         type='button'
-        onClick={() => navigate('/')}
+        onClick={() => {
+          dispatch(clearUser())
+          navigate('/')
+        }}
         className='uppercase mb-4 text-white'
       >
         back to search
       </button>
       <div className='w-full lg:flex items-start lg:space-x-6'>
         {/* profile-image */}
-        <div className='relative w-full max-w-md mx-auto lg:mx-0 rounded-md overflow-hidden shadow-xl'>
+        <div className='relative w-full max-w-[300px] mx-auto lg:mx-0 rounded-md overflow-hidden shadow-xl'>
           <div
             className='absolute top-0 left-0 z-5 w-full h-full'
             style={{ backgroundColor: 'rgba(20, 20, 20, 0.4)' }}
@@ -125,6 +129,38 @@ function User() {
               )}
             </div>
           )}
+        </div>
+      </div>
+      <div className='w-full max-w-md mx-auto lg:max-w-none lg:mx-0 flex flex-col lg:flex-row items-center shadow-xl my-6'>
+        <div className='w-full lg:w-1/4 flex items-center justify-between p-4 lg:border-r-2 border-slate-600'>
+          <div>
+            <p>Followers</p>
+            <p className='font-bold text-2xl text-white'>{followers}</p>
+          </div>
+          <FaUsers className='text-3xl text-pink-600' />
+        </div>
+        <div className='w-full lg:w-1/4 flex items-center justify-between p-4 lg:border-r-2 border-slate-600'>
+          <div>
+            <p>Following</p>
+            <p className='font-bold text-2xl text-white'>{following}</p>
+          </div>
+          <FaUserFriends className='text-3xl text-pink-600' />
+        </div>
+        <div className='w-full lg:w-1/4 flex items-center justify-between p-4 lg:border-r-2 border-slate-600'>
+          <div>
+            <p>Public Repos</p>
+            <p className='w-full font-bold text-2xl text-white'>
+              {public_repos}
+            </p>
+          </div>
+          <AiOutlineCodepen className='text-3xl text-pink-600' />
+        </div>
+        <div className='w-full lg:w-1/4 flex items-center justify-between p-4 '>
+          <div>
+            <p>Public Gists</p>
+            <p className='font-bold text-2xl text-white'>{public_gists}</p>
+          </div>
+          <FaStore className='text-3xl text-pink-600' />
         </div>
       </div>
     </div>

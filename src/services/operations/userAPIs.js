@@ -16,7 +16,7 @@ export function getSearchedUsers(query) {
       )
       if (response.data) {
         dispatch(setUsers(response.data))
-        await dispatch(setLoading(false))
+        dispatch(setLoading(false))
       }
     } catch (e) {
       console.log('Fetch User Error', e)
@@ -39,7 +39,7 @@ export function getUser(user) {
       )
       if (response.data) {
         dispatch(setUser(response.data))
-        await dispatch(setLoading(false))
+        dispatch(setLoading(false))
       }
     } catch (e) {
       console.log('Fetch User Error', e)
@@ -51,5 +51,12 @@ export function getUser(user) {
 export function clearUsers() {
   return (dispatch) => {
     dispatch(setUsers([]))
+  }
+}
+
+// clear exisiting user in state
+export function clearUser() {
+  return (dispatch) => {
+    dispatch(setUser({}))
   }
 }
