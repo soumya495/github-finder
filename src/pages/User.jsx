@@ -1,11 +1,16 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { getUser, clearUser } from '../services/operations/userAPIs'
+import {
+  getUser,
+  getUserRepos,
+  clearUser,
+} from '../services/operations/userAPIs'
 import Spinner from '../components/assets/spinner.gif'
 import { useNavigate } from 'react-router-dom'
 import { FaUsers, FaStore, FaUserFriends } from 'react-icons/fa'
 import { AiOutlineCodepen } from 'react-icons/ai'
+import UserRepos from '../components/userRepos'
 
 function User() {
   const params = useParams()
@@ -18,6 +23,7 @@ function User() {
   useEffect(() => {
     console.log(user)
     dispatch(getUser(user))
+    dispatch(getUserRepos(user))
   }, [])
 
   if (userData.loading || !userData.user)
@@ -163,6 +169,8 @@ function User() {
           <FaStore className='text-3xl text-pink-600' />
         </div>
       </div>
+      {/* Repositories */}
+      <UserRepos repos={userData.userRepos} />
     </div>
   )
 }

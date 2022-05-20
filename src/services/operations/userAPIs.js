@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { setUsers, setUser, setLoading } from '../../slices/users'
+import { setUsers, setUser, setUserRepos, setLoading } from '../../slices/users'
 
 // get search results
 export function getSearchedUsers(query) {
@@ -43,6 +43,25 @@ export function getUser(user) {
       }
     } catch (e) {
       console.log('Fetch User Error', e)
+    }
+  }
+}
+
+// get user repos
+export function getUserRepos(user) {
+  return async (dispatch) => {
+    dispatch(setLoading(true))
+    const response = await axios(
+      `${process.env.REACT_APP_GITHUB_API_URL}/users/${user}/repos`,
+      {
+        headers: {
+          Authorization: process.env.REACT_APP_GITHUB_FINDER_ACCESS_TOKEN,
+        },
+      }
+    )
+    if (response.data) {
+      dispatch(setUserRepos(response.data))
+      dispatch(setLoading(false))
     }
   }
 }
